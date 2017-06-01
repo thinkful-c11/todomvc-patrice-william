@@ -22,20 +22,56 @@ app.use(bodyParser.json());
 ///// GET and POST endpoint skeleton //////
 
 // should respond to GET with status 200 and an array
-app.get('/api/items',(req,res)=>{
-  res.json([]).sendStatus(200);
-});
+// app.get('/api/items',(req,res)=>{
+//   res.json([]).sendStatus(200);
+// });
 
 
 
-app.post('/api/items',(req,res)=>{
+// app.post('/api/items',(req,res)=>{
+//
+//   //should respond to POST with an object a status 201 and a location header
+//   //should respond to POST with the title of item that was POSTed
+//
+//   res.location('placeholder').status(201).json({title: req.body.title});
+//
+// });
 
-  //should respond to POST with an object a status 201 and a location header
-  //should respond to POST with the title of item that was POSTed
+ //should respond with the items in the database
+// app.get('/api/items', (req, res)=> {
+//   knex.select().from('items')
+//   .then(results => res.json(results));
+// });
 
-  res.location('placeholder').status(201).json({title: req.body.title});
+//should respond with the item corresponding to the item `id` in the route
+// app.get('/api/items/:id', (req, res)=> {
+//   const {id} = req.params;
+//   knex.select().from('items').where('id', id)
+//   .then((results) =>{
+//     const item = results[0];
+//     res.json(item);
+//   });
+// });
 
-});
+
+//should respond to an improper POST with status 400
+// app.post('/api/items', (req, res) => {
+//   const requiredValue = 'title';
+//   if(!(requiredValue in req.body)){
+//     res.status(400).end();
+//     //throw new Error ('Can\'t do');
+//     //return;
+//   }
+//   res.status(201).end();
+// });
+
+//should persist the data and respond with new item id'
+// app.post('/api/items', (req, res) =>{
+//   knex('items')
+//     .returning('id')
+//     .insert({title: req.body.title})
+//     .then(results => res.status(201).json({id:results[0]}));
+// });
 
 let server;
 let knex;
