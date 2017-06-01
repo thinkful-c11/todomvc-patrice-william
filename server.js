@@ -38,20 +38,31 @@ app.use(bodyParser.json());
 // });
 
  //should respond with the items in the database
-// app.get('/api/items', (req, res)=> {
-//   knex.select().from('items')
-//   .then(results => res.json(results));
-// });
+
+
+app.get('/api/items', (req, res)=> {
+  knex.select().from('items')
+  .then(results => {
+    let id = results[0].id;
+    let URL = `${req.protocol}://${req.get('host')}/api/items/${id}`;
+    res.json([{title: results[0].title, url: URL}]);
+
+  });
+});
+
+
+
+
 
 //should respond with the item corresponding to the item `id` in the route
-// app.get('/api/items/:id', (req, res)=> {
-//   const {id} = req.params;
-//   knex.select().from('items').where('id', id)
-//   .then((results) =>{
-//     const item = results[0];
-//     res.json(item);
-//   });
-// });
+app.get('/api/items/:id', (req, res)=> {
+  const {id} = req.params;
+  knex.select().from('items').where('id', id)
+  .then((results) =>{
+    const item = results[0];
+    res.json(item);
+  });
+});
 
 
 //should respond to an improper POST with status 400
@@ -72,6 +83,28 @@ app.use(bodyParser.json());
 //     .insert({title: req.body.title})
 //     .then(results => res.status(201).json({id:results[0]}));
 // });
+
+//should respond with a URL which can be used to retrieve the new item
+
+app.post('/api/items',(req,res)=>{
+  const protocol = req.protocol;
+  const host = req.get('host');
+  knex('items')
+    .returning(['id', 'title', 'completed'])
+    .insert({title: req.body.title, completed:false})
+    .then((r) =>{
+      let URL = `${protocol}://${host}/api/items/${r[0].id}`;
+
+      knex('items')
+        .returning(['id', 'title', 'completed', 'url'])
+        .where('id',r[0].id)
+        .update({url: URL})
+        .then(r=>{
+          res.status(201).location(URL).json({id: r[0].id, title: r[0].title, completed: r[0].completed, url: r[0].url});
+        });
+    });
+
+});
 
 let server;
 let knex;

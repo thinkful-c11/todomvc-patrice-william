@@ -231,12 +231,13 @@ describe('TodoMVC API:', () => {
       /**
        * This test requires you to add a URL to the response which has the location of the new item.
        */
-      it.only('should respond with a URL which can be used to retrieve the new item', function () {
+      it('should respond with the URL which can be used to retrieve the new item', function () {
         const newItem = { title: 'Buy milk' };
         return chai.request(app)
           .post('/api/items')
           .send(newItem)
           .then(function (result) {
+            console.log(result.body);
             const url = result.body.url;
             const split = url.lastIndexOf('/');
             const root = url.slice(0, split);
@@ -308,7 +309,7 @@ describe('TodoMVC API:', () => {
       /**
        * This test requires you to add a URL to the GET response which has the location of the new item.
        */
-      it('should respond with a URL which can be used to retrieve the new item', function () {
+      it.only('should respond with a URL which can be used to retrieve the new item', function () {
         const newItem = { title: 'Rake leaves' };
         return knex('items')
           .insert(newItem)
@@ -316,6 +317,7 @@ describe('TodoMVC API:', () => {
             return chai.request(app).get('/api/items');
           })
           .then(function (result) {
+            console.log(result.body);
             const url = result.body[0].url;
             const split = url.lastIndexOf('/');
             const root = url.slice(0, split);
