@@ -1,7 +1,7 @@
+
 # Created by https://www.gitignore.io/api/node,macos,windows
 
 ### macOS ###
-.vscode
 *.DS_Store
 .AppleDouble
 .LSOverride
@@ -87,7 +87,6 @@ typings/
 
 # dotenv environment variables file
 .env
-
 
 ### Windows ###
 # Windows thumbnail cache files
