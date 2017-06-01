@@ -5,13 +5,7 @@ const { DATABASE, PORT } = require('./config');
 
 const app = express();
 
-
-// ADD GET POST PUT DELETE ENDPOINTS HERE
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-
+// Add middleware and .get, .post, .put and .delete endpoints
 
 let server;
 let knex;
