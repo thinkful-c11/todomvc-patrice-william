@@ -13,7 +13,7 @@ describe('TodoMVC API:', () => {
   // before runs once at the beginning of the test suite
   before(() => runServer());
 
-  // after runs at the end of the tests 
+  // after runs at the end of the tests
   after(() => {
     return knex.destroy()
       .then(closeServer);
@@ -22,7 +22,7 @@ describe('TodoMVC API:', () => {
   /** SKELETON ENDPOINTS
    *  ==================
    * - Create skeleton endpoints for GET and POST
-   * 
+   *
    * Hint: Use `.only` or `.skip` to focus on a specific `describe` or `it` block
    *  - https://mochajs.org/#exclusive-tests
    */
@@ -30,7 +30,7 @@ describe('TodoMVC API:', () => {
     /**
      * This test requires a skeleton GET endpoint which responds with an array
      * and a status of 200 "OK"
-     * 
+     *
      * Inspect the test for clues to the route, status and correct response
      */
     it('should respond to GET with status 200 and an array', function () {
@@ -49,7 +49,7 @@ describe('TodoMVC API:', () => {
 
     /**
      * This test checks that CORS headers are properly configured
-     * 
+     *
      * Hint: "It's CORS time!"
      *  - https://enable-cors.org/server_expressjs.html
      *  The hint is not the *complete* solution, you will need to expand on it
@@ -59,7 +59,7 @@ describe('TodoMVC API:', () => {
         .get('/api/items')
         .then(function (result) {
           result.should.have.header('Access-Control-Allow-Origin', '*');
-          result.should.have.header('Access-Control-Allow-Headers', /Content-Type/); // RegEx: does it contain "Content-Type" 
+          result.should.have.header('Access-Control-Allow-Headers', /Content-Type/); // RegEx: does it contain "Content-Type"
           result.should.have.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
         })
         .catch((err) => {
@@ -70,9 +70,9 @@ describe('TodoMVC API:', () => {
     /**
      * This test requires a skeleton POST endpoint which responds with an object,
      * a location header and a status of 201 "Created"
-     * 
+     *
      * NOTE: For now, the location header value can be any placeholder text
-     * 
+     *
      * HINT: https://expressjs.com/en/4x/api.html#res.location
      */
     it('should respond to POST with an object a status 201 and a location header', function () {
@@ -92,7 +92,7 @@ describe('TodoMVC API:', () => {
 
     /**
      * This test requires the POST endpoint to responds the title of the item POSTed
-     * 
+     *
      * HINT: "Use the body-parser, Luke!"
      * https://expressjs.com/en/4x/api.html#req.body
      */
@@ -116,13 +116,13 @@ describe('TodoMVC API:', () => {
    *  ====================
    * - Create a Database, you choose the name
    * - Create a table named "items" with an "id" (primary key) and a "title" (text)
-   * 
-   *    CREATE TABLE items ( 
+   *
+   *    CREATE TABLE items (
    *      id     serial  NOT NULL,
    *      title  text    NOT NULL,
    *      CONSTRAINT items_pkey PRIMARY KEY ( id )
    *    );
-   * 
+   *
    * NOTE: previously working tests may fail as the database is wired-up, use `.only` to focus on your task.
    */
 
@@ -162,7 +162,7 @@ describe('TodoMVC API:', () => {
           });
       });
 
-      /** 
+      /**
        * This requires you to create a GET /api/items/:id endpoint and wire it up to knex and postgres
        */
       it('should respond with the item corresponding to the item `id` in the route', function () {
@@ -226,7 +226,7 @@ describe('TodoMVC API:', () => {
       });
 
       /**
-       * This test requires you to add a URL to the response which has the location of the new item. 
+       * This test requires you to add a URL to the response which has the location of the new item.
        */
       it('should respond with a URL which can be used to retrieve the new item', function () {
         const newItem = { title: 'Buy milk' };
@@ -272,10 +272,10 @@ describe('TodoMVC API:', () => {
           });
       });
 
-      /** 
-       * This test requires you to add a `location` header with the URL of the item 
-       * 
-       * HINT: 
+      /**
+       * This test requires you to add a `location` header with the URL of the item
+       *
+       * HINT:
        * - http://stackoverflow.com/a/10185427
        * - https://expressjs.com/en/api.html#req.protocol
        */
@@ -303,7 +303,7 @@ describe('TodoMVC API:', () => {
       });
 
       /**
-       * This test requires you to add a URL to the GET response which has the location of the new item. 
+       * This test requires you to add a URL to the GET response which has the location of the new item.
        */
       it('should respond with a URL which can be used to retrieve the new item', function () {
         const newItem = { title: 'Rake leaves' };
@@ -423,4 +423,3 @@ describe('TodoMVC API:', () => {
 
 
 });
-
