@@ -33,8 +33,9 @@ describe('TodoMVC API:', () => {
    */
   describe('GET and POST endpoint skeleton:', function () {
     /**
-     * This test requires you to create a skeleton GET endpoint which responds with an array
-     * and it requires you to create express middleware to set CORS headers
+     * This test requires a skeleton GET endpoint which responds with an array
+     * and it checks that CORS headers are properly configured
+     * 
      * Hint: https://enable-cors.org/server_expressjs.html
      *  (The hint is not the complete solution, you will need to expand on it)
      */
@@ -257,7 +258,7 @@ describe('TodoMVC API:', () => {
     /**
      * This test requires you to add a URL to the GET response which has the location of the new item. 
      */
-    it.only('should respond with a URL which can be used to retrieve the new item', function () {
+    it('should respond with a URL which can be used to retrieve the new item', function () {
       const newItem = { title: 'Rake leaves' };
       return knex('items')
         .insert(newItem)

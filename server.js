@@ -1,18 +1,17 @@
 'use strict';
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const { DATABASE, PORT } = require('./config');
 
 const app = express();
-app.use(bodyParser.json());
 
-// ADD EXPRESS MIDDLEWARE FOR CORS HEADERS HERE
 
 // ADD GET POST PUT DELETE ENDPOINTS HERE
-app.get('/api/items', (req, res) => {
-  res.send();
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
+
+
 
 let server;
 let knex;
