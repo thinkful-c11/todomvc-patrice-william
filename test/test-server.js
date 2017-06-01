@@ -1,3 +1,5 @@
+'use strict';
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { app, runServer, closeServer } = require('../server');
@@ -48,12 +50,12 @@ describe('TodoMVC API:', () => {
           result.should.have.header('Access-Control-Allow-Origin', 'http://chai-http.test');
           result.should.have.header('Access-Control-Allow-Headers', 'Content-Type');
           result.should.have.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-          result.should.have.header('Access-Control-Max-Age', '86400');
         })
         .catch((err) => {
           throw (err);
         });
     });
+
     /**
      * This test requires you to create a skeleton POST endpoint which responds with status 201,
      * along with the item POSTed and a location header
@@ -113,10 +115,9 @@ describe('TodoMVC API:', () => {
     });
 
     /**
-     * This requires you to create a GET /api/items/:id endpoint and 
-     * wire it up to knex and postgres
+     * This requires you to create a GET /api/items/:id endpoint and wire it up to knex and postgres
      */
-    it('should respond with the items in the database', function () {
+    it('should respond with the item corresponding to the item `id` in the route', function () {
       const newItem = { title: 'Buy soy milk' };
       let itemId;
       return knex('items')
@@ -238,7 +239,6 @@ describe('TodoMVC API:', () => {
         .then(function (result) {
           result.should.have.header('location');
           result.body.should.have.property('url').is.a('string');
-
           const url = result.get('location');
           const split = url.lastIndexOf('/');
           const root = url.slice(0, split);
@@ -254,6 +254,30 @@ describe('TodoMVC API:', () => {
         });
     });
 
+    /**
+     * This test requires you to add a URL to the GET response which has the location of the new item. 
+     */
+    it.only('should respond with a URL which can be used to retrieve the new item', function () {
+      const newItem = { title: 'Rake leaves' };
+      return knex('items')
+        .insert(newItem)
+        .then(function () {
+          return chai.request(app).get('/api/items');
+        })
+        .then(function (result) {
+          const url = result.body[0].url;
+          const split = url.lastIndexOf('/');
+          const root = url.slice(0, split);
+          const path = url.substr(split);
+          return chai.request(root).get(path);
+        })
+        .then(function (result) {
+          result.body.should.have.property('title', newItem.title);
+        })
+        .catch((err) => {
+          throw (err);
+        });
+    });
 
   });
 
@@ -286,6 +310,7 @@ describe('TodoMVC API:', () => {
           throw (err);
         });
     });
+
     /**
      * This test requires you to wireup the database to the PUT endpoint so the completed status can be changed
      */
@@ -343,7 +368,7 @@ describe('TodoMVC API:', () => {
           throw (err);
         });
     });
-
   });
 
 });
+
