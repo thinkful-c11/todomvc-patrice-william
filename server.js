@@ -150,7 +150,7 @@ function closeServer() {
   return knex.destroy().then(() => {
     return new Promise((resolve, reject) => {
       console.log('Closing servers');
-      server.close(err => {
+      server.close(err =>  {
         if (err) {
           return reject(err);
         }
