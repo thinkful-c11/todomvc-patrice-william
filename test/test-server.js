@@ -309,7 +309,7 @@ describe('TodoMVC API:', () => {
       /**
        * This test requires you to add a URL to the GET response which has the location of the new item.
        */
-      it.only('should respond with a URL which can be used to retrieve the new item', function () {
+      it('should respond with a URL which can be used to retrieve the new item', function () {
         const newItem = { title: 'Rake leaves' };
         return knex('items')
           .insert(newItem)
@@ -350,6 +350,7 @@ describe('TodoMVC API:', () => {
             return chai.request(app).put(`/api/items/${itemId}`).send(putItem);
           })
           .then(function (result) {
+            console.log(result.body);
             result.body.should.have.property('title', putItem.title);
             return knex
               .select('title')
@@ -379,6 +380,7 @@ describe('TodoMVC API:', () => {
             return chai.request(app).put(`/api/items/${itemId}`).send(putItem);
           })
           .then(function (result) {
+            console.log(result.body);
             result.body.should.have.property('completed', true);
             return knex
               .select('completed')
@@ -398,7 +400,7 @@ describe('TodoMVC API:', () => {
       /**
        * This test requires you to wire-up the delete endpoint so items can be deleted.
        */
-      it('should DELETE an item', function () {
+      it.only('should DELETE an item', function () {
         const newItem = { title: 'Buy soy milk' };
         let itemId;
         return knex('items')

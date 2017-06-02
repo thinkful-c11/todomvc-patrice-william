@@ -54,6 +54,7 @@ app.get('/api/items', (req, res)=> {
 
 
 
+
 //should respond with the item corresponding to the item `id` in the route
 app.get('/api/items/:id', (req, res)=> {
   const {id} = req.params;
@@ -105,6 +106,22 @@ app.post('/api/items',(req,res)=>{
     });
 
 });
+
+app.put('/api/items/:id', (req,res) => {
+  knex('items')
+    .returning(['id', 'title', 'completed'])
+    .where('id', req.params.id)
+    .update({title: req.body.title, completed: req.body.completed})
+    .then(results => res.json(results[0]));
+
+});
+
+app.delete('/api/items/:id', (req,res) => {
+  knex('items')
+    .where('id', req.params.id)
+    .del()
+    .then(()=> res.sendStatus(204));
+})
 
 let server;
 let knex;
