@@ -1,4 +1,5 @@
 'use strict';
+console.log('\x1b\c');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -40,7 +41,7 @@ describe('TodoMVC API:', () => {
           result.should.have.status(200);
           result.should.be.json;
           result.body.should.be.a('array');
-          result.body.should.be.empty;
+
         })
         .catch((err) => {
           throw (err);
@@ -78,7 +79,7 @@ describe('TodoMVC API:', () => {
     it('should respond to POST with an object a status 201 and a location header', function () {
       return chai.request(app)
         .post('/api/items')
-        .send({})
+        .send({title: 'hey'})
         .then(function (result) {
           result.should.have.status(201);
           result.should.have.header('location');
@@ -129,14 +130,24 @@ describe('TodoMVC API:', () => {
   // NOTE: This describe block wraps sub-blocks and tests
   describe('With database:', function () {
 
-    // afterEach test, delete the test items in the table
-    beforeEach(() => {
+    // after & before Each test, delete the test items in the table
+
+  beforeEach(() => {
+        return knex('items')
+          .del()
+          .catch((err) => {
+            console.error('ERROR', err.message);
+          });
+      });
+
+    afterEach(() => {
       return knex('items')
         .del()
         .catch((err) => {
           console.error('ERROR', err.message);
         });
     });
+
 
     describe('GET endpoints', function () {
       /**
@@ -400,7 +411,7 @@ describe('TodoMVC API:', () => {
       /**
        * This test requires you to wire-up the delete endpoint so items can be deleted.
        */
-      it.only('should DELETE an item', function () {
+      it('should DELETE an item', function () {
         const newItem = { title: 'Buy soy milk' };
         let itemId;
         return knex('items')

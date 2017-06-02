@@ -19,13 +19,6 @@ app.use(function (req, res, next) {
 // Body Parser middleware //
 app.use(bodyParser.json());
 
-///// GET and POST endpoint skeleton //////
-
-// should respond to GET with status 200 and an array
-// app.get('/api/items',(req,res)=>{
-//   res.json([]).sendStatus(200);
-// });
-
 
 
 // app.post('/api/items',(req,res)=>{
@@ -37,36 +30,31 @@ app.use(bodyParser.json());
 //
 // });
 
- //should respond with the items in the database
 
 
-app.get('/api/items', (req, res)=> {
+app.get('/api/items', (req, res) => {
   knex.select().from('items')
-  .then(results => {
-    let id = results[0].id;
-    let URL = `${req.protocol}://${req.get('host')}/api/items/${id}`;
-    res.json([{title: results[0].title, url: URL}]);
-
-  });
+    .then(results => {
+      results.forEach(item => {
+        item.url = `${req.protocol}://${req.get('host')}/api/items/${item.id}`;
+      });
+      res.json(results);
+    });
 });
-
-
-
-
 
 
 //should respond with the item corresponding to the item `id` in the route
-app.get('/api/items/:id', (req, res)=> {
-  const {id} = req.params;
+app.get('/api/items/:id', (req, res) => {
+  const { id } = req.params;
   knex.select().from('items').where('id', id)
-  .then((results) =>{
-    const item = results[0];
-    res.json(item);
-  });
+    .then((results) => {
+      const item = results[0];
+      res.json(item);
+    });
 });
 
 
-//should respond to an improper POST with status 400
+// should respond to an improper POST with status 400
 // app.post('/api/items', (req, res) => {
 //   const requiredValue = 'title';
 //   if(!(requiredValue in req.body)){
@@ -77,8 +65,16 @@ app.get('/api/items/:id', (req, res)=> {
 //   res.status(201).end();
 // });
 
-//should persist the data and respond with new item id'
+// should persist the data and respond with new item id'
 // app.post('/api/items', (req, res) =>{
+
+//   const requiredValue = 'title';
+//   if(!(requiredValue in req.body)){
+//     res.status(400).end();
+//     // throw new Error ('Can\'t do');
+//     //return;
+//   }
+
 //   knex('items')
 //     .returning('id')
 //     .insert({title: req.body.title})
@@ -87,40 +83,49 @@ app.get('/api/items/:id', (req, res)=> {
 
 //should respond with a URL which can be used to retrieve the new item
 
-app.post('/api/items',(req,res)=>{
+app.post('/api/items', (req, res) => {
+
+  const requiredValue = 'title';
+  if (!(requiredValue in req.body)) {
+    res.status(400).end();
+    throw new Error ('Can\'t do');
+    //return;
+  }
+
+
   const protocol = req.protocol;
   const host = req.get('host');
   knex('items')
     .returning(['id', 'title', 'completed'])
-    .insert({title: req.body.title, completed:false})
-    .then((r) =>{
+    .insert({ title: req.body.title, completed: false })
+    .then((r) => {
       let URL = `${protocol}://${host}/api/items/${r[0].id}`;
 
       knex('items')
         .returning(['id', 'title', 'completed', 'url'])
-        .where('id',r[0].id)
-        .update({url: URL})
-        .then(r=>{
-          res.status(201).location(URL).json({id: r[0].id, title: r[0].title, completed: r[0].completed, url: r[0].url});
+        .where('id', r[0].id)
+        .update({ url: URL })
+        .then(r => {
+          res.status(201).location(URL).json({ id: r[0].id, title: r[0].title, completed: r[0].completed, url: r[0].url });
         });
     });
 
 });
 
-app.put('/api/items/:id', (req,res) => {
+app.put('/api/items/:id', (req, res) => {
   knex('items')
     .returning(['id', 'title', 'completed'])
     .where('id', req.params.id)
-    .update({title: req.body.title, completed: req.body.completed})
+    .update({ title: req.body.title, completed: req.body.completed })
     .then(results => res.json(results[0]));
 
 });
 
-app.delete('/api/items/:id', (req,res) => {
+app.delete('/api/items/:id', (req, res) => {
   knex('items')
     .where('id', req.params.id)
     .del()
-    .then(()=> res.sendStatus(204));
+    .then(() => res.sendStatus(204));
 })
 
 let server;
