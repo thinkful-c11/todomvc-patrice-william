@@ -130,7 +130,7 @@ describe('TodoMVC API:', () => {
   describe('With database:', function () {
 
     // afterEach test, delete the test items in the table
-    afterEach(() => {
+    beforeEach(() => {
       return knex('items')
         .del()
         .catch((err) => {
