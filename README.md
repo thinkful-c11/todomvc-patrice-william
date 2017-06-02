@@ -1,4 +1,3 @@
-Patrice and William's ToDo MVC Backend  API Project
 This is a backend API using a ToDo MVC style JavaScript web app.
 It allows you to get, create, delete and update to do items.
 It also allows you to group todo items as completed or active.
