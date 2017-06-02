@@ -10,7 +10,7 @@ const knex = require('knex')(DATABASE);
 chai.should();
 chai.use(chaiHttp);
 
-describe('TodoMVC API:', () => {
+describe('TodoMVC API:', () =>{
   // before runs once at the beginning of the test suite
   before(() => runServer());
 
