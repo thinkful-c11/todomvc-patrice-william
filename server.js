@@ -91,8 +91,6 @@ app.post('/api/items', (req, res) => {
     throw new Error ('Can\'t do');
     //return;
   }
-
-
   const protocol = req.protocol;
   const host = req.get('host');
   knex('items')
@@ -126,7 +124,7 @@ app.delete('/api/items/:id', (req, res) => {
     .where('id', req.params.id)
     .del()
     .then(() => res.sendStatus(204));
-})
+});
 
 let server;
 let knex;

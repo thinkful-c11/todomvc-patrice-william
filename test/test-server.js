@@ -132,13 +132,13 @@ describe('TodoMVC API:', () =>{
 
     // after & before Each test, delete the test items in the table
 
-  beforeEach(() => {
-        return knex('items')
+    beforeEach(() => {
+      return knex('items')
           .del()
           .catch((err) => {
             console.error('ERROR', err.message);
           });
-      });
+    });
 
     afterEach(() => {
       return knex('items')
